@@ -1,0 +1,6 @@
+#!/bin/sh
+
+for TAG in $(git tag -l --points-at HEAD); do
+	docker tag ${IMAGE_NAME} ${DOCKER_REPO}:${TAG}
+	docker push ${DOCKER_REPO}:${TAG}
+done
