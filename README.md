@@ -5,7 +5,7 @@
 [![Docker Pulls](https://img.shields.io/docker/pulls/stucky/prometheus-docker-sd.svg)]()
 Prometheus Service Discovery for Docker Container.
 
-=== How to use this image ===
+## How to use this image
 Sample `docker-compose.yml`:
 ```bash
 version: '2'
