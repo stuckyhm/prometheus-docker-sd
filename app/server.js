@@ -8,6 +8,8 @@ var targetFile = '/prometheus-docker-sd/docker-targets.json';
 const fs = require('fs');
 logger.level = 'debug';
 
+const ONLY_USE_IP = (process.env.ONLY_USE_IP === 'true');
+
 function convertDockerJson2Prometheus(data){
   var containerName = data.Name.substring(1);
   var container = {
@@ -39,7 +41,17 @@ function convertDockerJson2Prometheus(data){
           logger.info('Using default port "' + port + '".');
         }
 
-        var target = containerName + ':' + port;
+        var hostname = containerName;
+        if("prometheus-scrape.hostname" in data.Config.Labels) {
+          hostname = data.Config.Labels["prometheus-scrape.hostname"];
+        }
+        if("prometheus-scrape.ip_as_hostname" in data.Config.Labels) {
+          hostname = data.NetworkSettings.IPAddress;
+        }
+        if(ONLY_USE_IP == true){
+          hostname = data.NetworkSettings.IPAddress;
+        }
+        var target = hostname + ':' + port;
         container.targets.push(target);
         logger.info('Add scrape target "' + target + '".');
 
@@ -106,4 +118,5 @@ function loop() {
   });
 }
 
+loop();
 setInterval(loop, 30000);

@@ -3,6 +3,7 @@
 [![](https://images.microbadger.com/badges/version/stucky/prometheus-docker-sd.svg)](https://microbadger.com/images/stucky/prometheus-docker-sd)
 [![](https://images.microbadger.com/badges/commit/stucky/prometheus-docker-sd.svg)](https://microbadger.com/images/stucky/prometheus-docker-sd)
 [![Docker Pulls](https://img.shields.io/docker/pulls/stucky/prometheus-docker-sd.svg)]()
+
 Prometheus Service Discovery for Docker Container.
 
 ## How to use this image
@@ -55,13 +56,15 @@ scrape_configs:
 ```
 
 Add the following labels to your containers.
-| label                          | mandatory | default          | description                             | 
-| ------------------------------ | :-------: | ---------------- | --------------------------------------- |
-| prometheus-scrape.enabled      |       yes |                  | Must set to "true" for enabled.         |
-| prometheus-scrape.job_name     |        no | <Container-Name> | Content for the prometheus label "job". |
-| prometheus-scrape.port         |        no |             9090 | Port of the metrics endpoint.           |
-| prometheus-scrape.scheme       |        no |             http | Scheme http or https                    |
-| prometheus-scrape.metrics_path |        no |         /metrics | Path to the metrics endpoint.           |
+| label                            | mandatory | default          | description                                         | 
+| -------------------------------- | :-------: | ---------------- | --------------------------------------------------- |
+| prometheus-scrape.enabled        |       yes |                  | Must set to "true" for enabled.                     |
+| prometheus-scrape.job_name       |        no | <Container-Name> | Content for the prometheus label "job".             |
+| prometheus-scrape.hostname       |        no | <Container-Name> | Hostname, if it differs from the container name.    |
+| prometheus-scrape.ip_as_hostname |        no |            false | Use the container ip instead of the container name. |
+| prometheus-scrape.port           |        no |             9090 | Port of the metrics endpoint.                       |
+| prometheus-scrape.scheme         |        no |             http | Scheme http or https                                |
+| prometheus-scrape.metrics_path   |        no |         /metrics | Path to the metrics endpoint.                       |
 
 **Important: The Container has to be in the same network that prometheus.**
 
