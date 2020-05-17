@@ -7,8 +7,9 @@
     "start": "nodejs app/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": "https://github.com/stuckyhm/prometheus-docker-sd",
   "author": "Sebastian Stuckenbrock <sstuckenbrock@efhm.de>",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "dockerode": "^3.2.0",
     "log4js": "^6.2.1"
