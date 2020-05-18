@@ -2,7 +2,7 @@
 [![](https://images.microbadger.com/badges/image/stucky/prometheus-docker-sd.svg)](https://microbadger.com/images/stucky/prometheus-docker-sd)
 [![](https://images.microbadger.com/badges/version/stucky/prometheus-docker-sd.svg)](https://microbadger.com/images/stucky/prometheus-docker-sd)
 [![](https://images.microbadger.com/badges/commit/stucky/prometheus-docker-sd.svg)](https://microbadger.com/images/stucky/prometheus-docker-sd)
-[![Docker Pulls](https://img.shields.io/docker/pulls/stucky/prometheus-docker-sd.svg)]()
+[![Docker Pulls](https://img.shields.io/docker/pulls/stucky/prometheus-docker-sd.svg)](https://hub.docker.com/r/stucky/prometheus-docker-sd)
 
 Prometheus Service Discovery for Docker Container.
 
@@ -60,7 +60,7 @@ Add the following labels to your containers.
 | -------------------------------- | :-------: | ---------------- | --------------------------------------------------- |
 | prometheus-scrape.enabled        |       yes |                  | Must set to "true" for enabled.                     |
 | prometheus-scrape.job_name       |        no | <Container-Name> | Content for the prometheus label "job".             |
-| prometheus-scrape.hostname       |        no | <Container-Name> | Hostname, if it differs from the container name.    |
+| prometheus-scrape.hostname       |        no | <Container-Name> | Hostname, if it differs from the container name or for access via the public interface. |
 | prometheus-scrape.ip_as_hostname |        no |            false | Use the container ip instead of the container name. |
 | prometheus-scrape.port           |        no |             9090 | Port of the metrics endpoint.                       |
 | prometheus-scrape.scheme         |        no |             http | Scheme http or https                                |
