@@ -67,14 +67,44 @@ Add the following labels to your containers.
 
 **Important: The Container has to be in the same network that prometheus.**
 
-Usage of the label at the example of node-exporter.
+Usage of the label at the example of node-exporter:
 ```bash
 docker run -d \
   --name="node-exporter" \
   --pid="host" \
   -v /:/host:ro \
+  --network=monitoring_ext \
   -l prometheus-scrape.enabled=true \
+  -l prometheus-scrape.job_name="node-exporter" \
   -l prometheus-scrape.port=9100 \
+  -l prometheus-scrape.metrics_path="/metrics" \
   quay.io/prometheus/node-exporter \
   --path.rootfs=/host
+```
+
+Or via `docker-compose.yml`:
+```bash
+  node-exporter:
+    image: prom/node-exporter:latest
+    restart: unless-stopped
+    networks:
+      - internal
+      - monitoring_ext
+    labels:
+      prometheus-scrape.enabled:         "true"
+      prometheus-scrape.job_name:        "node-exporter"
+      prometheus-scrape.port:            9100
+      prometheus-scrape.metrics_path:    "/metrics"
+    volumes:
+      - /proc:/rootfs/proc:ro
+      - /sys:/rootfs/sys:ro
+      - /:/rootfs:ro
+    expose:
+      - "9100"
+
+networks:
+    internal:
+    monitoring_ext:
+        external: true
+        name: monitoring_ext
 ```
