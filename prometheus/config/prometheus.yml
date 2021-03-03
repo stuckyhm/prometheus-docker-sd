@@ -1,0 +1,39 @@
+global:
+  scrape_interval:     15s
+  evaluation_interval: 30s
+
+  external_labels:
+    monitor: dev
+
+rule_files:
+- "first.rules"
+- "my/*.rules"
+
+scrape_configs:
+
+# ==============================================================================
+#  Prometheus it self
+# ------------------------------------------------------------------------------
+
+- job_name: prometheus
+  honor_labels: true
+  static_configs:
+  - targets: ['localhost:9090']
+
+# ==============================================================================
+#  Docker service discovery
+# ------------------------------------------------------------------------------
+
+- job_name: 'docker_service_discovery' 
+  file_sd_configs:
+    - files:
+      - /prometheus-docker-sd/docker-targets.json
+
+# ==============================================================================
+# Add your exporter below
+# ------------------------------------------------------------------------------
+#
+# - job_name: your_exporter
+#   scrape_interval: 15s
+#   static_configs:
+#   - targets: ['your_hostname:9090']

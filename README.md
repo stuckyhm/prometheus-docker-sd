@@ -16,23 +16,24 @@ services:
 # prometheus
 # ------------------------------------------------------------------------------
   prometheus:
-    image: "prom/prometheus:v2.10.0"
+    image: "prom/prometheus:v2.25.0"
     restart: unless-stopped
+    networks:
+      - monitoring_ext
     expose:
       - "9090"
     ports:
-      - "9090:9090"
+      - "19090:9090"
     volumes:
-       - ./prometheus/config:/etc/prometheus:ro
-       - ./prometheus/data:/prometheus:rw
-    volumes_from:
-       - prometheus-docker-sd:ro
+      - ./prometheus/config:/etc/prometheus:ro
+      - ./prometheus/data:/prometheus:rw
+      - prometheus-docker-sd:/prometheus-docker-sd:ro
     command: [
-       "--config.file=/etc/prometheus/prometheus.yml",
-       "--storage.tsdb.path=/prometheus",
-       "--storage.tsdb.retention.time=15d",
-       "--web.console.libraries=/usr/share/prometheus/console_libraries",
-       "--web.console.templates=/usr/share/prometheus/consoles"
+      "--config.file=/etc/prometheus/prometheus.yml",
+      "--storage.tsdb.path=/prometheus",
+      "--storage.tsdb.retention.time=15d",
+      "--web.console.libraries=/usr/share/prometheus/console_libraries",
+      "--web.console.templates=/usr/share/prometheus/consoles"
     ]
 
 # ==============================================================================
@@ -42,7 +43,32 @@ services:
     image: "stucky/prometheus-docker-sd:latest"
     restart: unless-stopped
     volumes:
-        - /var/run/docker.sock:/var/run/docker.sock
+      - /var/run/docker.sock:/var/run/docker.sock
+      - prometheus-docker-sd:/prometheus-docker-sd:rw
+
+# ==============================================================================
+# Volumes
+# ------------------------------------------------------------------------------
+volumes:
+  prometheus-docker-sd:
+
+# ==============================================================================
+
+
+# ==============================================================================
+# Networks
+# ------------------------------------------------------------------------------
+networks:
+ monitoring_ext:
+   external: true
+   name: monitoring_ext
+
+# ==============================================================================
+```
+
+Create a network
+```bash
+docker create network monitoring_ext
 ```
 
 Add to your scrape config in `prometheus.yml`:
@@ -65,7 +91,7 @@ Add the following labels to your containers.
 | prometheus-scrape.scheme         |        no |             http | Scheme http or https                                |
 | prometheus-scrape.metrics_path   |        no |         /metrics | Path to the metrics endpoint.                       |
 
-**Important: The Container has to be in the same network that prometheus.**
+**Important: The Container has to be in the same network (monitoring_ext) that prometheus.**
 
 Usage of the label at the example of node-exporter:
 ```bash

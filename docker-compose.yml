@@ -1,0 +1,55 @@
+version: '2'
+services:
+
+# ==============================================================================
+# prometheus
+# ------------------------------------------------------------------------------
+  prometheus:
+    image: "prom/prometheus:v2.25.0"
+    restart: unless-stopped
+    networks:
+      - monitoring_ext
+    expose:
+      - "9090"
+    ports:
+      - "19090:9090"
+    volumes:
+      - ./prometheus/config:/etc/prometheus:ro
+      - ./prometheus/data:/prometheus:rw
+      - prometheus-docker-sd:/prometheus-docker-sd:ro
+    command: [
+      "--config.file=/etc/prometheus/prometheus.yml",
+      "--storage.tsdb.path=/prometheus",
+      "--storage.tsdb.retention.time=15d",
+      "--web.console.libraries=/usr/share/prometheus/console_libraries",
+      "--web.console.templates=/usr/share/prometheus/consoles"
+    ]
+
+# ==============================================================================
+# prometheus-docker-sd
+# ------------------------------------------------------------------------------
+  prometheus-docker-sd:
+    image: "stucky/prometheus-docker-sd:latest"
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - prometheus-docker-sd:/prometheus-docker-sd:rw
+
+# ==============================================================================
+# Volumes
+# ------------------------------------------------------------------------------
+volumes:
+  prometheus-docker-sd:
+
+# ==============================================================================
+
+
+# ==============================================================================
+# Networks
+# ------------------------------------------------------------------------------
+networks:
+ monitoring_ext:
+   external: true
+   name: monitoring_ext
+
+# ==============================================================================
