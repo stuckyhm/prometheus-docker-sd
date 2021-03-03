@@ -61,7 +61,6 @@ Add the following labels to your containers.
 | prometheus-scrape.enabled        |       yes |                  | Must set to "true" for enabled.                     |
 | prometheus-scrape.job_name       |        no | <Container-Name> | Content for the prometheus label "job".             |
 | prometheus-scrape.hostname       |        no | <Container-Name> | Hostname, if it differs from the container name or for access via the public interface. |
-| prometheus-scrape.ip_as_hostname |        no |            false | Use the container ip instead of the container name. |
 | prometheus-scrape.port           |        no |             9090 | Port of the metrics endpoint.                       |
 | prometheus-scrape.scheme         |        no |             http | Scheme http or https                                |
 | prometheus-scrape.metrics_path   |        no |         /metrics | Path to the metrics endpoint.                       |

@@ -41,12 +41,9 @@ function convertDockerJson2Prometheus(data){
           logger.info('Using default port "' + port + '".');
         }
 
-        var hostname = containerName;
+        var hostname = data.Config.Hostname;
         if("prometheus-scrape.hostname" in data.Config.Labels) {
           hostname = data.Config.Labels["prometheus-scrape.hostname"];
-        }
-        if("prometheus-scrape.ip_as_hostname" in data.Config.Labels) {
-          hostname = data.NetworkSettings.IPAddress;
         }
         if(ONLY_USE_IP == true){
           hostname = data.NetworkSettings.IPAddress;
