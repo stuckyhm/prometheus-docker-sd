@@ -1,4 +1,4 @@
-FROM node:10
+FROM node:12-alpine
 
 ARG BUILD_DATE="1970-01-01T00:00:00Z"
 ARG VCS_REF="local"
