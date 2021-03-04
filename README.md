@@ -110,6 +110,8 @@ docker run -d \
 
 Or via `docker-compose.yml`:
 ```bash
+version: '2'
+services:
   node-exporter:
     image: prom/node-exporter:latest
     restart: unless-stopped
