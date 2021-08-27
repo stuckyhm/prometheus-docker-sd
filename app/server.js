@@ -110,7 +110,7 @@ function loop() {
 
       //console.log(promConfig);
       logger.info('Write to file "' + targetFile + '".');
-      fs.writeFileSync(targetFile, JSON.stringify(promConfig));
+      fs.writeFileSync(targetFile, JSON.stringify(promConfig, null, 4));
     });
   });
 }
