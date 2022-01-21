@@ -12,6 +12,6 @@
   "license": "MIT",
   "dependencies": {
     "dockerode": "^3.3.1",
-    "log4js": "^6.3.0"
+    "log4js": "^6.4.0"
   }
 }
