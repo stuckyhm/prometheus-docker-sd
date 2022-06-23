@@ -32,25 +32,39 @@ function convertDockerJson2Prometheus(data){
           logger.info('Set job name to "' + container.labels["job"] + '".');
         }
 
-        var port = "9090";
-
         if("prometheus-scrape.port" in data.Config.Labels) {
-          port = data.Config.Labels["prometheus-scrape.port"];
-          logger.info('Port is set to "' + port + '".');
-        }else{
+          portArray = data.Config.Labels["prometheus-scrape.port"].split(",");
+          for (let i = 0; i < portArray.length; i++) {
+            port = portArray[i];
+            logger.info('Port is set to "' + port + '".');
+
+            var hostname = data.Config.Hostname;
+            if("prometheus-scrape.hostname" in data.Config.Labels) {
+              hostname = data.Config.Labels["prometheus-scrape.hostname"];
+            }
+            if(ONLY_USE_IP == true){
+              hostname = data.NetworkSettings.IPAddress;
+            }
+            var target = hostname + ':' + port;
+            container.targets.push(target);
+            logger.info('Add scrape target "' + target + '".');
+          }
+        } else {
+          var port = "9090";
           logger.info('Using default port "' + port + '".');
+
+          var hostname = data.Config.Hostname;
+          if("prometheus-scrape.hostname" in data.Config.Labels) {
+            hostname = data.Config.Labels["prometheus-scrape.hostname"];
+          }
+          if(ONLY_USE_IP == true){
+            hostname = data.NetworkSettings.IPAddress;
+          }
+          var target = hostname + ':' + port;
+          container.targets.push(target);
+          logger.info('Add scrape target "' + target + '".');
         }
 
-        var hostname = data.Config.Hostname;
-        if("prometheus-scrape.hostname" in data.Config.Labels) {
-          hostname = data.Config.Labels["prometheus-scrape.hostname"];
-        }
-        if(ONLY_USE_IP == true){
-          hostname = data.NetworkSettings.IPAddress;
-        }
-        var target = hostname + ':' + port;
-        container.targets.push(target);
-        logger.info('Add scrape target "' + target + '".');
 
         if("prometheus-scrape.scheme" in data.Config.Labels) {
           container.labels["__scheme__"] = data.Config.Labels["prometheus-scrape.scheme"]; 
