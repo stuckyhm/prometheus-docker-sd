@@ -8,8 +8,8 @@ Prometheus Service Discovery for Docker Container.
 
 ## How to use this image
 Sample `docker-compose.yml`:
-```bash
-version: '2'
+
+```yaml
 services:
 
 # ==============================================================================
@@ -68,11 +68,11 @@ networks:
 
 Create a network
 ```bash
-docker create network monitoring_ext
+docker network create monitoring_ext
 ```
 
 Add to your scrape config in `prometheus.yml`:
-```bash
+```yaml
 scrape_configs:
 
 - job_name: 'service_discovery'
@@ -110,7 +110,6 @@ docker run -d \
 
 Or via `docker-compose.yml`:
 ```bash
-version: '2'
 services:
   node-exporter:
     image: prom/node-exporter:latest
